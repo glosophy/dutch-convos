@@ -1,6 +1,7 @@
 import pandas as pd
 import datetime
 import os
+import matplotlib.pyplot as plt
 
 cwd = os.getcwd()
 print('cwd:', cwd)
@@ -54,8 +55,12 @@ mostCommon = pd.DataFrame(mostCommon)
 
 print(mostCommon)
 
+# Concatenate 'Date' and 'Time' columns
+clean_df['Date'] = pd.to_datetime(df['Date'] + ' ' + df['Time'])
+
 # Convert the 'Date' column to datetime format
 clean_df['Date'] = clean_df['Date'].astype('datetime64[ns]')
+clean_df = clean_df.drop(columns=['Time'])
 
 # Check the format of 'Date' column
 print(clean_df.info())
@@ -81,3 +86,7 @@ sumg_df = date_g.groupby(pd.Grouper(key='Date', axis=0,
 
 sumj_df.to_csv('Him.csv')
 sumg_df.to_csv('Her.csv')
+
+plot_g = pd.read_csv('Her.csv')
+plot_g.plot()
+plt.savefig("g.svg")
