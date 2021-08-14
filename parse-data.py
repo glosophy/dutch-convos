@@ -46,8 +46,38 @@ df['Words'] = df['Message'].apply(lambda x: len(str(x).split(" ")))
 # Create another column for the number of characters in messages
 df['Characters'] = df['Message'].str.len()
 
+# Drop the 'attached' rows
+clean_df = df[~df['Message'].isin(['<attached', 'image omitted', 'Missed voice call'])]
 
-mostCommon = df.Message.value_counts().head(10)
+mostCommon = clean_df.Message.value_counts().head(10)
 mostCommon = pd.DataFrame(mostCommon)
 
 print(mostCommon)
+
+# Convert the 'Date' column to datetime format
+clean_df['Date'] = clean_df['Date'].astype('datetime64[ns]')
+
+# Check the format of 'Date' column
+print(clean_df.info())
+
+# Keep only dates and word/character count
+date_df = clean_df[['Date', 'Name', 'Words', 'Characters']]
+
+# Create J & G frames
+date_j = date_df[date_df['Name'].isin(['Hardonk Jomme'])]
+date_g = date_df[date_df['Name'].isin(['Guillermina'])]
+
+# Drop 'Name' columns
+date_j = date_j.drop(columns=['Name'])
+date_g = date_g.drop(columns=['Name'])
+
+# Applying the groupby function on df
+sumj_df = date_j.groupby(pd.Grouper(key='Date', axis=0,
+                                    freq='D')).sum()
+
+sumg_df = date_g.groupby(pd.Grouper(key='Date', axis=0,
+                                    freq='D')).sum()
+
+
+sumj_df.to_csv('Him.csv')
+sumg_df.to_csv('Her.csv')
