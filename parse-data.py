@@ -84,9 +84,6 @@ sumg_df = date_g.groupby(pd.Grouper(key='Date', axis=0,
                                     freq='D')).sum()
 
 
-sumj_df.to_csv('Him.csv')
-sumg_df.to_csv('Her.csv')
+# sumj_df.to_csv('Him.csv')
+# sumg_df.to_csv('Her.csv')
 
-plot_g = pd.read_csv('Her.csv')
-plot_g.plot()
-plt.savefig("g.svg")
