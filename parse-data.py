@@ -174,14 +174,15 @@ month = [2, 3, 4, 5, 6]
 for i in month:
     g = date_df.loc[(date_df['Date'].dt.month == i) & (date_df['Name'] == "Guillermina")]
     j = date_df.loc[(date_df['Date'].dt.month == i) & (date_df['Name'] == "Hardonk Jomme")]
+
     g = g.groupby(pd.Grouper(key='Date', axis=0,
-                                        freq='T')).sum()
+                             freq='T')).sum()
     j = j.groupby(pd.Grouper(key='Date', axis=0,
                              freq='T')).sum()
+
     g = g.reset_index()
     j = j.reset_index()
 
     g.plot(x='Date', y='Characters')
-    # j.plot(x='Date', y='Characters')
-    plt.show()
+    plt.savefig('g_month{}.svg'.format(i))
 
