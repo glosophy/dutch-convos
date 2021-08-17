@@ -184,5 +184,5 @@ for i in month:
     j = j.reset_index()
 
     g.plot(x='Date', y='Characters')
-    plt.savefig('g_month{}.svg'.format(i))
+    # plt.savefig('g_month{}.svg'.format(i))
 
